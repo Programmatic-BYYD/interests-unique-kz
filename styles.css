@@ -730,13 +730,6 @@ display: flex;
   transform: translateX(5px); /* Небольшой сдвиг вправо для интерактивности */
 }
 
-/* Активный пункт (как на вашем скриншоте) */
-.nav-item.active {
-
-  color: #fff;
-
-}
-
 .nav-icon {
   margin-right: 12px;
   font-size: 18px;
