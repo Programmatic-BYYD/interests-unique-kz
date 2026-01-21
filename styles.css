@@ -732,9 +732,9 @@ display: flex;
 
 /* Активный пункт (как на вашем скриншоте) */
 .nav-item.active {
-  background: #0d6efd; 
+
   color: #fff;
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+
 }
 
 .nav-icon {
