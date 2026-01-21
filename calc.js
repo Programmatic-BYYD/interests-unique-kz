@@ -29,18 +29,10 @@ const GENDER_MAP = {
   "Ж": ["Ж", "female", "Женщины"]
 };
 
-// const COEF = {
-//   Broad: 1.0,
-//   Medium: 0.875,
-//   Narrow: 0.6,
-//   "Very Narrow": 0.3
-// };
-
 function calculateBaseFromCity(region, gender, ageGroupKey) {
   const capacity = region.capacity;
   if (!capacity) return 0;
 
-  // Если запрашиваем М или Ж, ищем соответствующий ключ в данных
   const possibleGenderKeys = GENDER_MAP[gender] || [];
   const genderKey = possibleGenderKeys.find(k => capacity[k]);
 
@@ -61,7 +53,11 @@ function calculateBase() {
   }
 
   const gender = document.getElementById("genderSelect").value;
-  const ageGroupValue = document.getElementById("ageGroup")?.value || "";
+  
+  // Получаем все выбранные чекбоксы возраста
+  const ageCheckboxes = document.querySelectorAll('#ageGroupContainer input:checked');
+  const selectedAgeKeys = Array.from(ageCheckboxes).map(cb => cb.value);
+
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
 
@@ -73,13 +69,17 @@ function calculateBase() {
 
     let regionSum = 0;
 
-    if (gender === "М/Ж") {
-      // Суммируем М и Ж отдельно для надежности
-      regionSum += calculateBaseFromCity(region, "М", ageGroupValue);
-      regionSum += calculateBaseFromCity(region, "Ж", ageGroupValue);
-    } else {
-      regionSum = calculateBaseFromCity(region, gender, ageGroupValue);
-    }
+    // Если группы выбраны — считаем их сумму, если нет — считаем "ALL"
+    const ageKeysToCalculate = selectedAgeKeys.length > 0 ? selectedAgeKeys : ["ALL"];
+
+    ageKeysToCalculate.forEach(ageKey => {
+      if (gender === "М/Ж") {
+        regionSum += calculateBaseFromCity(region, "М", ageKey);
+        regionSum += calculateBaseFromCity(region, "Ж", ageKey);
+      } else {
+        regionSum += calculateBaseFromCity(region, gender, ageKey);
+      }
+    });
 
     totalSum += regionSum;
 
@@ -89,50 +89,61 @@ function calculateBase() {
       <td>—</td>
       <td>—</td>
       <td>${gender}</td>
-      <td>${ageGroupValue || "Любой"}</td>
+      <td>${selectedAgeKeys.length > 0 ? selectedAgeKeys.join(', ') : "Любой"}</td>
       <td>${regionSum.toLocaleString("ru-RU")}</td>
     `;
     tableBody.appendChild(tr);
   });
 
   BASE = totalSum;
+
+  // Обновление дашборда результатов
   document.getElementById("baseReach").innerText = BASE.toLocaleString("ru-RU");
   document.getElementById("finalReach").innerText = BASE.toLocaleString("ru-RU");
   document.getElementById("coef").innerText = "1.00";
   document.getElementById("deltaReach").innerText = "0%";
   document.getElementById("citiesCount").innerText = selectedRegions.length;
 
-  document.getElementById("detailsAccordion").classList.add("open");
-  document.getElementById("tableWrapper").style.display = "block";
-  document.getElementById("detailsSubtitle").innerText = "Скрыть список";
+  // Авто-открытие таблицы деталей
+  const accordion = document.getElementById("detailsAccordion");
+  const tableWrapper = document.getElementById("tableWrapper");
+  const subtitle = document.getElementById("detailsSubtitle");
+
+  accordion.classList.add("open");
+  tableWrapper.style.display = "block";
+  subtitle.innerText = "Скрыть список";
 }
 
 function calculateWithInterests() {
-  if (!BASE || BASE === 0) {
+  if (!BASE) {
     alert("Сначала рассчитайте базовый охват");
     return;
   }
 
-  const selectedInterestsIds = window.getSelectedInterests ? window.getSelectedInterests() : [];
-  if (selectedInterestsIds.length === 0) {
+  const selectedInterests = window.getSelectedInterests ? window.getSelectedInterests() : [];
+
+  if (!selectedInterests.length) {
     document.getElementById("finalReach").innerText = BASE.toLocaleString("ru-RU");
     document.getElementById("coef").innerText = "1.00";
     document.getElementById("deltaReach").innerText = "0%";
     return;
   }
 
-  const coefs = selectedInterestsIds.map(id => {
-    const interest = interestsData.find(i => i.id === id);
-    // Используем COEF из data.js
-    return interest ? (COEF[interest.status] || 1) : 1; 
-  });
+  const coefs = selectedInterests
+    .map(id => {
+      const interest = interestsData.find(i => i.id === id);
+      return interest ? COEF[interest.status] : null;
+    })
+    .filter(Boolean);
+
+  if (!coefs.length) return;
 
   const finalCoef = Math.min(...coefs);
   const finalReach = Math.round(BASE * finalCoef);
-  const deltaPercent = ((1 - finalCoef) * 100).toFixed(1);
+  const deltaPercent = ((BASE - finalReach) / BASE * 100).toFixed(1);
 
   document.getElementById("finalReach").innerText = finalReach.toLocaleString("ru-RU");
-  document.getElementById("coef").innerText = finalCoef.toFixed(3);
+  document.getElementById("coef").innerText = finalCoef.toFixed(2);
   document.getElementById("deltaReach").innerText = `${deltaPercent}%`;
 }
 
@@ -141,20 +152,60 @@ document.getElementById("calcBtn").addEventListener("click", calculateBase);
 document.getElementById("calcWithInterestsBtn").addEventListener("click", calculateWithInterests);
 document.getElementById("resetBtn").addEventListener("click", () => location.reload());
 
-// Аккордеоны
+// Управление аккордеонами
 document.getElementById("tableToggle").addEventListener("click", () => {
-  const acc = document.getElementById("detailsAccordion");
-  const wrapper = document.getElementById("tableWrapper");
-  const isOpen = acc.classList.contains("open");
-  acc.classList.toggle("open");
-  wrapper.style.display = isOpen ? "none" : "block";
-  document.getElementById("detailsSubtitle").innerText = isOpen ? "Раскрыть список" : "Скрыть список";
+  const detailsAccordion = document.getElementById("detailsAccordion");
+  const tableWrapper = document.getElementById("tableWrapper");
+  const subtitle = document.getElementById("detailsSubtitle");
+  const isOpen = detailsAccordion.classList.contains("open");
+  
+  detailsAccordion.classList.toggle("open");
+  tableWrapper.style.display = isOpen ? "none" : "block";
+  subtitle.innerText = isOpen ? "Раскрыть список" : "Скрыть список";
 });
 
 document.getElementById("interestsToggle").addEventListener("click", () => {
-  const acc = document.getElementById("interestsAccordion");
-  const body = document.getElementById("interestsBody");
-  const isOpen = acc.classList.contains("open");
-  acc.classList.toggle("open");
-  body.style.display = isOpen ? "none" : "block";
+  const interestsAccordion = document.getElementById("interestsAccordion");
+  const interestsBody = document.getElementById("interestsBody");
+  const isOpen = interestsAccordion.classList.contains("open");
+  
+  interestsAccordion.classList.toggle("open");
+  interestsBody.style.display = isOpen ? "none" : "block";
+});
+
+// Логика работы выпадающего списка возраста
+document.addEventListener('DOMContentLoaded', () => {
+  const ageHeader = document.getElementById('ageHeader');
+  const ageDropdown = document.getElementById('ageDropdown');
+  const selectedText = ageHeader.querySelector('.selected-text');
+  const checkboxes = document.querySelectorAll('#ageGroupContainer input[type="checkbox"]');
+
+  // Открытие/закрытие по клику
+  ageHeader.addEventListener('click', (e) => {
+    e.stopPropagation();
+    ageDropdown.classList.toggle('open');
+  });
+
+  // Закрытие при клике вне списка
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('ageMultiselect').contains(e.target)) {
+      ageDropdown.classList.remove('open');
+    }
+  });
+
+  // Обновление заголовка при выборе
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      const checked = Array.from(checkboxes).filter(c => c.checked);
+      if (checked.length === 0) {
+        selectedText.textContent = "Любой";
+      } else if (checked.length === checkboxes.length) {
+        selectedText.textContent = "Все возрасты";
+      } else if (checked.length > 2) {
+        selectedText.textContent = `Выбрано: ${checked.length}`;
+      } else {
+        selectedText.textContent = checked.map(c => c.parentElement.textContent.trim()).join(', ');
+      }
+    });
+  });
 });
