@@ -768,3 +768,75 @@ display: flex;
     margin-right: 0;
   }
 }
+/* Контейнер мультиселекта */
+.custom-multiselect {
+  position: relative;
+  min-width: 220px;
+}
+
+.multiselect-header {
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #cfd5db;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #111; /* Цвет текста заголовка */
+}
+
+.multiselect-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #cfd5db;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  padding: 8px 0; /* Отступы сверху и снизу */
+}
+
+.multiselect-dropdown.open {
+  display: block;
+}
+
+.age-checkboxes-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.age-checkboxes-container label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 15px; /* Увеличили область клика */
+  transition: background 0.2s;
+  color: #374151 !important; /* Принудительно задаем темный цвет текста */
+  font-size: 14px;
+  width: 100%;
+}
+
+.age-checkboxes-container label:hover {
+  background: #f3f4f6;
+}
+
+/* Убираем лишние стили у самих чекбоксов */
+.age-checkboxes-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  min-width: 18px; /* Чтобы не сжимался */
+  cursor: pointer;
+}
+
+.age-checkboxes-container label span {
+  white-space: nowrap; /* Чтобы возраст не переносился */
+}
