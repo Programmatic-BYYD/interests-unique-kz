@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Емкость уникальных пользователей</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<div class="dashboard-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-logo">BYYD</div>
+      <nav class="sidebar-nav">
+        <a href="https://programmatic-byyd.github.io/project-byyd-interests-unique/" class="nav-item active">
+          <span class="nav-icon">🇷🇺</span> Россия
+        </a>
+        <a href="kz.html" class="nav-item">
+          <span class="nav-icon">🇰🇿</span> Казахстан
+        </a>
+        <a href="by.html" class="nav-item">
+          <span class="nav-icon">🇧🇾</span> Беларусь
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      
+  <div class="container">
+
+    <h1>Емкость мобильной аудитории в Казахстане</h1>
+    <p class="muted">
+      Введите города, пол и возраст, затем при необходимости сузьте аудиторию интересами
+    </p>
+
+    <!-- GEO -->
+    <div class="filter city-selector geo-full">
+      <label>Города и регионы</label>
+
+      <input type="text" id="cityInput" placeholder="Введите название региона или города, либо укажите через запятую"
+        autocomplete="off" />
+
+      <ul id="citySuggestions" class="city-selector__list"></ul>
+      <div id="selectedCities" class="city-selector__selected"></div>
+    </div>
+
+    <!-- SOC-DEM -->
+    <div class="filters">
+      <div class="filter">
+        <label>Пол</label>
+        <select id="genderSelect">
+          <option value="М/Ж">Любой</option>
+          <option value="М">Мужчины</option>
+          <option value="Ж">Женщины</option>
+        </select>
+      </div>
+
+      <div class="filter">
+        <label>Возраст</label>
+        <select id="ageGroup">
+          <option value="">Любой</option>
+          <option value="0-4">0–4 года</option>
+          <option value="5-12">5–12 лет</option>
+          <option value="13-17">13–17 лет</option>
+          <option value="18-24">18–24 года</option>
+          <option value="25-34">25–34 года</option>
+          <option value="35-44">35–44 года</option>
+          <option value="45-54">45–54 года</option>
+          <option value="55-64">55–64 года</option>
+          <option value="65+">65+ лет</option>
+        </select>
+      </div>
+
+      <!-- ACTIONS -->
+      <!-- <div class="filters"> -->
+        <button id="calcBtn">Рассчитать базовый охват</button>
+        <button id="calcWithInterestsBtn">Рассчитать охват с интересами</button>
+        <button id="resetBtn">Очистить</button>
+        <!-- <button id="addMillionCities">Рассчитать города-миллионники</button> -->
+      </div>
+
+      <!-- RESULTS -->
+      <h2>Результаты расчета</h2>
+
+      <!-- RESULTS DASHBOARD -->
+      <div class="results-grid">
+
+        <div class="result-card primary">
+          <div class="card-title">Базовый охват</div>
+          <div class="card-value" id="baseReach">—</div>
+          <div class="card-sub">Гео и социально-демографический таргетинг</div>
+        </div>
+
+        <div class="result-card accent">
+          <div class="card-title">Охват с интересами</div>
+          <div class="card-value" id="finalReach">—</div>
+          <div class="card-sub">
+            Коэффициент: <b id="coef">1.00</b>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Снижение охвата на:</div>
+          <div class="card-value" id="deltaReach">—</div>
+          <div class="card-sub">от базового охвата</div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Городов и регионов в расчёте</div>
+          <div class="card-value" id="citiesCount">0</div>
+          <div class="card-sub">выбрано</div>
+        </div>
+
+      </div>
+
+      <!-- <div class="result-explanation" id="explanation">
+        —
+      </div> -->
+
+
+
+      <!-- INTERESTS ACCORDION -->
+      <div class="details-accordion" id="interestsAccordion">
+        <div class="details-header" id="interestsToggle">
+          <div class="details-text">
+            <div class="details-title">Категории интересов в соответствии со стандартами IAB</div>
+            <div class="details-subtitle">
+              Уникальный охват мобильной аудитории на основе интересов
+            </div>
+          </div>
+          <div class="details-arrow">⌄</div>
+        </div>
+
+        <div class="details-body" id="interestsBody">
+
+          <div class="interests-toolbar">
+            <input type="text" id="interestsSearch" placeholder="Поиск по интересам" />
+            <button id="clearInterests">Сбросить</button>
+          </div>
+
+          <div class="selected-interests-panel">
+            <div class="selected-header">
+              <span>Выбранные (<b id="selectedCount">0</b>)</span>
+              <div class="selected-actions">
+                <button id="copySelected">Скопировать</button>
+                <button id="clearSelected">Очистить</button>
+              </div>
+            </div>
+
+            <div class="selected-interests" id="selectedInterests"></div>
+          </div>
+
+          <div class="interests-list" id="interestsContainer"></div>
+        </div>
+      </div>
+
+      <!-- DETAILS ACCORDION -->
+      <div class="details-accordion" id="detailsAccordion">
+        <div class="details-header" id="tableToggle">
+          <div class="details-text">
+            <div class="details-title">Детализация по городам</div>
+            <div class="details-subtitle" id="detailsSubtitle">
+              Раскрыть список
+            </div>
+          </div>
+          <div class="details-arrow">⌄</div>
+        </div>
+
+        <div class="details-body" id="tableWrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Город</th>
+                <th>Регион</th>
+                <th>Федеральный округ</th>
+                <th>Пол</th>
+                <th>Возраст</th>
+                <th>Охват</th>
+              </tr>
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="data.js"></script>
+    <script src="geo.js"></script>
+    <script src="interests.js"></script>
+    <script src="calc.js"></script>
+
+</body>
+
+</html>

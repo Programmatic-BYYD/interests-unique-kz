@@ -1,0 +1,777 @@
+/* ==============================
+   RESET + BASE
+============================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px;
+  font-family: Inter, Arial, sans-serif;
+  background: #f4f6f8;
+  color: #111;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 32px 40px 48px;
+  border-radius: 8px;
+}
+
+/* ==============================
+   TYPOGRAPHY
+============================== */
+h1 {
+  font-size: 34px;
+  margin: 0 0 10px;
+}
+
+h2 {
+  margin-top: 48px;
+  margin-bottom: 16px;
+  font-size: 24px;
+  border-bottom: 1px solid #e2e6ea;
+  padding-bottom: 8px;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.big {
+  font-size: 34px;
+  font-weight: 700;
+  margin: 12px 0 20px;
+}
+
+/* ==============================
+   FILTERS
+============================== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.filter label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.filter input,
+.filter select {
+  min-width: 220px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #cfd5db;
+  background: #fff;
+}
+
+.filter input::placeholder {
+  color: #9ca3af;
+}
+
+/* ==============================
+   GEO AUTOCOMPLETE
+============================== */
+.city-selector {
+  position: relative;
+  min-width: 340px;
+}
+
+#cityInput {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd5db;
+  font-size: 14px;
+}
+
+#cityInput:focus {
+  outline: none;
+  border-color: #1e66f5;
+}
+
+/* выпадающий список */
+.city-selector__list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #cfd5db;
+  border-radius: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 100; /* важно — НЕ перекрывает кнопки */
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  display: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.city-selector__list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.city-selector__list li:hover {
+  background: #f1f5f9;
+}
+
+/* ==============================
+   SELECTED GEO (CHIPS)
+============================== */
+.city-selector__selected {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.city-chip {
+  background: #eef3ff;
+  color: #1e66f5;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.city-chip span {
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.city-chip span:hover {
+  opacity: 1;
+}
+
+/* ==============================
+   BUTTONS
+============================== */
+button {
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+#calcBtn {
+  background: #0d6efd;
+  color: #fff;
+}
+
+#calcBtn:hover {
+ background-color: #22c55e; /* green */
+ color: #ffffff;
+}
+
+#calcWithInterestsBtn {
+  background: #0d6efd;
+  color: #fff;
+}
+
+#calcWithInterestsBtn:hover {
+ background-color: #22c55e; /* green */
+ color: #ffffff;
+}
+
+/* ==============================
+   GEO PRESET BUTTONS
+============================== */
+
+.geo-preset-btn,
+#addMillionCities {
+  background: #e0e7ff;
+  color: #1e3a8a;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.geo-preset-btn:hover,
+#addMillionCities:hover {
+  background: #c7d2fe;
+}
+
+.geo-preset-btn:active,
+#addMillionCities:active {
+  transform: scale(0.97);
+}
+
+
+#resetBtn {
+  background: #e5e7eb;
+  color: #111;
+}
+
+#resetBtn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ==============================
+   TABLE
+============================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th,
+td {
+  border: 1px solid #e5e7eb;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+  font-weight: 600;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+tbody tr:last-child td {
+  font-weight: 700;
+}
+
+/* ==============================
+   RESULT BLOCK
+============================== */
+.result {
+  margin-top: 40px;
+  padding: 24px;
+  border: 2px solid #111;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+#finalReach {
+  color: #0d6efd;
+}
+
+/* ==============================
+   EXPLANATION
+============================== */
+#explanation {
+  margin-top: 10px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* ==============================
+   TABLE TOGGLE
+============================== */
+.table-toggle {
+  margin: 12px 0 8px;
+  font-size: 14px;
+  color: #1e66f5;
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-toggle:hover {
+  text-decoration: underline;
+}
+
+/* ==============================
+   DETAILS ACCORDION
+============================== */
+.details-accordion {
+  margin-top: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  cursor: pointer;
+}
+
+.details-header:hover {
+  background: #f9fafb;
+}
+
+.details-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+}
+
+.details-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.details-arrow {
+  font-size: 20px;
+  color: #1e66f5;
+  transition: transform 0.25s ease;
+}
+
+.details-body {
+  display: none;
+  padding: 0 22px 22px;
+}
+
+.details-accordion.open .details-arrow {
+  transform: rotate(180deg);
+}
+
+
+/* ==============================
+   GEO FULL WIDTH
+============================== */
+.geo-full {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.geo-full #cityInput {
+  width: 100%;
+  min-width: 100%;
+}
+
+/* ==============================
+   INTERESTS
+============================== */
+
+.interests-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.interests-toolbar input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd5db;
+  font-size: 14px;
+}
+
+.interests-toolbar button {
+  background: #e5e7eb;
+}
+
+.selected-interests {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.selected-interests .chip {
+  background: #eef3ff;
+  color: #1e66f5;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 13px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.selected-interests .chip span {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.interests-category {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.interests-category-header {
+  padding: 10px 14px;
+  background: #f9fafb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.interests-items {
+  display: none;
+  padding: 8px 14px;
+}
+
+.interests-category.open .interests-items {
+  display: block;
+}
+
+.interests-items label {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+/* ==============================
+   SELECTED INTERESTS PANEL
+============================== */
+
+.selected-interests-panel {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: #fafafa;
+}
+
+.selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.selected-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.selected-actions button {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.selected-interests .chip {
+  background: #eef3ff;
+  color: #1e66f5;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 6px 0 0;
+}
+/* ==============================
+   SELECTED ACTIONS HOVER
+============================== */
+
+#copySelected,
+#clearSelected,
+#clearInterests {
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+/* COPY — GREEN */
+#copySelected:hover {
+  background-color: #22c55e; /* green */
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* CLEAR / RESET — RED */
+#clearSelected:hover,
+#clearInterests:hover {
+  background-color: #ef4444; /* red */
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Active click feedback */
+#copySelected:active,
+#clearSelected:active,
+#clearInterests:active {
+  transform: scale(0.97);
+}
+
+/* ==============================
+   RESULTS DASHBOARD
+============================== */
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 32px 0 16px;
+}
+
+.result-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-card.primary {
+  background: linear-gradient(135deg, #eef3ff, #ffffff);
+}
+
+.result-card.accent {
+  background: linear-gradient(135deg, #f0fdf4, #ffffff);
+}
+
+.card-title {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.result-explanation {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==============================
+   GEO PRESETS
+============================== */
+
+.geo-presets {
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.geo-preset-btn {
+  background: #f3f4f6;
+  color: #111;
+  border: 1px dashed #cfd5db;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.geo-preset-btn:hover {
+  background: #e0e7ff;
+  border-color: #1e66f5;
+  color: #1e66f5;
+}
+
+.geo-preset-btn:active {
+  transform: scale(0.97);
+}
+
+.details-accordion.open {
+  border: 1px solid #e0e7ff;
+  background: #f9fbff;
+}
+.details-accordion.open .details-header {
+  background: #eef3ff;
+  border-bottom: 1px solid #dbe3ff;
+}
+.details-accordion.open .details-arrow {
+  transform: rotate(180deg);
+  color: #1e66f5;
+}
+.details-body {
+  padding: 20px;
+  background: #ffffff;
+}
+.details-body table {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.details-body thead th {
+  background: #f1f5ff;
+  font-weight: 600;
+}
+.details-body tbody tr:hover {
+  background: #f9fafb;
+}
+
+input.error {
+  border-color: #ff4d4f;
+  background: #fff1f0;
+}
+
+
+/* Основной контейнер фильтров */
+.filters {
+  display: flex; /* */
+  flex-wrap: wrap; /* */
+  gap: 20px; /* */
+  align-items: flex-end; /* Выравнивает кнопки по нижней линии селекторов */
+  margin-bottom: 24px; /* Общий отступ всей строки от результатов */
+}
+
+/* Специфическое уточнение для кнопок в этой строке */
+.filters button {
+  margin-bottom: 0; /* Убираем лишний отступ снизу у самих кнопок */
+  height: 40px; /* Можно задать фиксированную высоту, чтобы она совпадала с высотой select */
+}
+
+/* Layout Wrapper */
+.dashboard-wrapper {
+display: flex;
+  align-items: flex-start; /* Чтобы сайдбар не растягивался на всю высоту, если контента мало */
+  gap: 32px; /* Расстояние между сайдбаром и контейнером */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  width: 260px;
+  background: #1e293b;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  
+  /* Убираем sticky, чтобы sidebar тянулся вместе с родителем */
+  position: relative; 
+  
+  /* Растягиваем на всю доступную высоту родителя */
+  align-self: stretch; 
+  
+  /* ПРАВКА: Бордер радиус 8px */
+  border-radius: 8px; 
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-logo {
+  padding: 32px 24px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #38bdf8; /* Акцентный голубой */
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 24px 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin: 4px 12px; /* Отступы внутри сайдбара для эффекта плавающих кнопок */
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 8px; /* Скругление внутренних кнопок */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная динамика */
+  font-weight: 500;
+}
+
+/* Эффект при наведении — динамическое подсвечивание */
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: translateX(5px); /* Небольшой сдвиг вправо для интерактивности */
+}
+
+/* Активный пункт (как на вашем скриншоте) */
+.nav-item.active {
+  background: #0d6efd; 
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.nav-icon {
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  font-size: 12px;
+  color: #64748b;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Main Content Adjustments */
+.main-content {
+  flex: 1; /* Контейнер занимает все оставшееся место */
+  min-width: 0; /* Защита от вылетания таблиц за экран */
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebar-logo, .nav-item span:not(.nav-icon), .sidebar-footer {
+    display: none;
+  }
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 16px;
+  }
+  .nav-item {
+    justify-content: center;
+  }
+  .nav-icon {
+    margin-right: 0;
+  }
+}
