@@ -55,21 +55,28 @@
         </select>
       </div>
 
-      <div class="filter">
-        <label>Возраст</label>
-        <select id="ageGroup">
-          <option value="">Любой</option>
-          <option value="0-4">0–4 года</option>
-          <option value="5-12">5–12 лет</option>
-          <option value="13-17">13–17 лет</option>
-          <option value="18-24">18–24 года</option>
-          <option value="25-34">25–34 года</option>
-          <option value="35-44">35–44 года</option>
-          <option value="45-54">45–54 года</option>
-          <option value="55-64">55–64 года</option>
-          <option value="65+">65+ лет</option>
-        </select>
+<div class="filter">
+  <label>Возраст</label>
+  <div class="custom-multiselect" id="ageMultiselect">
+    <div class="multiselect-header" id="ageHeader">
+      <span class="selected-text">Любой</span>
+      <span class="arrow">⌄</span>
+    </div>
+    <div class="multiselect-dropdown" id="ageDropdown">
+      <div class="age-checkboxes-container" id="ageGroupContainer">
+        <label><input type="checkbox" value="0-4"><span>0–4 года</span></label>
+        <label><input type="checkbox" value="5-12"><span>5–12 лет</span></label>
+        <label><input type="checkbox" value="13-17"><span>13–17 лет</span></label>
+        <label><input type="checkbox" value="18-24"><span>18–24 года</span></label>
+        <label><input type="checkbox" value="25-34"><span>25–34 года</span></label>
+        <label><input type="checkbox" value="35-44"><span>35–44 года</span></label>
+        <label><input type="checkbox" value="45-54"><span>45–54 года</span></label>
+        <label><input type="checkbox" value="55-64"><span>55–64 года</span></label>
+        <label><input type="checkbox" value="65+"><span>65+ лет</span></label>
       </div>
+    </div>
+  </div>
+</div>
 
       <!-- ACTIONS -->
       <!-- <div class="filters"> -->
